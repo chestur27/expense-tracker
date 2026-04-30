@@ -44,7 +44,7 @@ ID    Date           Description     Amount
 - [x] Basic commands (add, list, delete)
 - [ ] Summary of expenses
 - [ ] Monthly summary/filtering
-- [ ] Refactoring / Modularization
+- [x] Refactoring / Modularization
 - [ ] Mini ETL Pipeline
 - [ ] n8n Discord automation integration
 
