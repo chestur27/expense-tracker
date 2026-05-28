@@ -7,7 +7,7 @@ A CLI-based expense tracker built with Python and SQLite, with planned extension
 - Add expenses with description and amount
 - View all expenses in a formatted table
 - Delete expenses by ID
-- Persisten storage using SQLite
+- Persistent storage using SQLite
 
 ## Tech Stack
 
