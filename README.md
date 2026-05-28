@@ -18,15 +18,15 @@ A CLI-based expense tracker built with Python and SQLite, with planned extension
 
 ### Add an expense
 
-`python expense_tracker.py add --description "Lunch" --amount 120`
+`python main.py add --description "Lunch" --amount 120`
 
 ### List all expenses
 
-`python expense_tracker.py list`
+`python main.py list`
 
 ### Delete an expense
 
-`python expense_tracker.py delete --id 5`
+`python main.py delete --id 5`
 
 ## Example Output
 
