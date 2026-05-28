@@ -33,7 +33,14 @@ def show_expense_list():
     print("-" * 45)
     for expense in all_expenses:
         print(f"{expense[0]:<5} {expense[1]:<15} {expense[2]:<15} {expense[3]:<10}")
-
+    
+    total_expenses_query = '''
+    SELECT sum(amount) AS TOTAL FROM expenses
+    '''
+    cursor.execute(total_expenses_query)
+    total = cursor.fetchone()
+    print("-" * 45)
+    print(f"Total amount: {total[0]}")
     db_con.close()
         
 
