@@ -1,6 +1,7 @@
 from db import get_connection
 
 def add_expense(description, amount):
+
     trimmed_desc = description.strip()
     if len(trimmed_desc) == 0:
         print("Empty description. Please add a description.")
@@ -8,6 +9,7 @@ def add_expense(description, amount):
     if amount < 0:
         print("Negative amount is not allowed.")
         return
+    
     db_con = get_connection()
     cursor = db_con.cursor()
 
@@ -55,7 +57,17 @@ def delete_expense(id):
     db_con = get_connection()
     cursor = db_con.cursor()
 
+    cursor.execute("SELECT id FROM expenses WHERE id = ?", (id,))
+    expense_id = cursor.fetchone()
+
+    if not expense_id:
+        print("No ID found.")
+        db_con.close()
+        return
+    
     cursor.execute("DELETE FROM expenses WHERE id = ?", (id,))
     db_con.commit()
+
+    print("Succesfully deleted an expense.")
 
     db_con.close()
