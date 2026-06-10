@@ -1,14 +1,12 @@
 from db import get_connection
 
 def add_expense(description, amount):
+    trimmed_desc = description.strip()
+    if len(trimmed_desc) == 0:
+        print("Empty description. Please add a description.")
+        return
     if amount < 0:
-        print("Negative amount is not allowed")
-        return
-    if len(description) == 0:
-        print("Description is empty. Please provide a description")
-        return
-    if description.isspace():
-        print("Description does not allow blank spaces")
+        print("Negative amount is not allowed.")
         return
     db_con = get_connection()
     cursor = db_con.cursor()
@@ -18,7 +16,7 @@ def add_expense(description, amount):
     VALUES (?, ?)
     '''
 
-    cursor.execute(insert_expenses_query, (description, amount))
+    cursor.execute(insert_expenses_query, (trimmed_desc, amount))
     db_con.commit()
 
     print("Expenses added successfully!")
