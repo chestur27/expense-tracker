@@ -1,6 +1,15 @@
 from db import get_connection
 
 def add_expense(description, amount):
+    if amount < 0:
+        print("Negative amount is not allowed")
+        return
+    if len(description) == 0:
+        print("Description is empty. Please provide a description")
+        return
+    if description.isspace():
+        print("Description does not allow blank spaces")
+        return
     db_con = get_connection()
     cursor = db_con.cursor()
 
