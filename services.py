@@ -49,12 +49,17 @@ def show_expense_list():
     cursor.execute(total_expenses_query)
     total = cursor.fetchone()
     print("-" * 45)
-    if total[0] == None:
+    if total[0] is None:
         print("Total amount: \u20B10")
     else:
         print(f"Total amount: \u20B1{total[0]}")
     db_con.close()
-        
+
+def summary_expense(year):
+    db_con = get_connection()
+    cursor = db_con.cursor() 
+
+    
 
 def delete_expense(id):
     db_con = get_connection()

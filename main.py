@@ -1,5 +1,5 @@
 from cli import tracker_commands
-from services import add_expense, show_expense_list, delete_expense
+from services import add_expense, show_expense_list, delete_expense, summary_expense
 from db import db_init
 
 def expense_process():
@@ -13,6 +13,9 @@ def expense_process():
             return
         case "delete":
             delete_expense(result.id)
+            return
+        case "month":
+            summary_expense(result.year)
             return
 
 def main():
