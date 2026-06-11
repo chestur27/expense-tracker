@@ -49,7 +49,10 @@ def show_expense_list():
     cursor.execute(total_expenses_query)
     total = cursor.fetchone()
     print("-" * 45)
-    print(f"Total amount: {total[0]}")
+    if total[0] == None:
+        print("No expenses recorded.")
+    else:
+        print(f"Total amount: \u20B1{total[0]}")
     db_con.close()
         
 

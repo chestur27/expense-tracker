@@ -42,7 +42,7 @@ ID    Date           Description     Amount
 ## Roadmap
 
 - [x] Basic commands (add, list, delete)
-- [ ] Summary of expenses
+- [ ] Summary / Total of expenses
 - [ ] Monthly summary/filtering
 - [x] Refactoring / Modularization
 - [ ] Mini ETL Pipeline

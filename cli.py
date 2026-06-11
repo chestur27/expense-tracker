@@ -6,11 +6,14 @@ def tracker_commands():
     create_expense = subparsers.add_parser("add")
     subparsers.add_parser("list")
     delete_expense = subparsers.add_parser("delete")
+    monthly_summary = subparsers.add_parser("summary")
 
     create_expense.add_argument("--description", required=True, metavar=" ", help="Description of the expense")
     create_expense.add_argument("--amount", type=float, required=True, metavar= " ", help="Amount of the expense")
 
     delete_expense.add_argument("--id", type=int, required=True, metavar=" ",  help="ID of the expense")
+
+    monthly_summary.add_argument("--month", type=int, required=True, metavar=" ", help="Total expenses for selected month")
     
     args = parser.parse_args()
 
