@@ -66,8 +66,12 @@ def delete_expense(id):
         return
     
     cursor.execute("DELETE FROM expenses WHERE id = ?", (id,))
-    db_con.commit()
-
     print("Succesfully deleted an expense.")
+
+    cursor.execute("SELECT EXISTS (SELECT 1 FROM expenses)")
+    table_check = cursor.fetchone()
+    if table_check[0] == 0:
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name = 'expenses'")
+    db_con.commit()
 
     db_con.close()
