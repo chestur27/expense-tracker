@@ -1,66 +1,45 @@
 # Expense Tracker
 
-A CLI-based expense tracker built with Python and SQLite, with planned extensions into ETL workflows and automation.
+A small, offline Android expense tracker built with Python, Flet, and SQLite. This is an early personal project that I plan to improve over time.
 
-## Features
+## Current features
 
-- Add expenses with description and amount
-- View all expenses in a formatted table
-- Delete expenses by ID
-- Persistent storage using SQLite
+- Add expenses with a description, amount, and date
+- View expenses and totals by month
+- Edit expenses and delete them with confirmation
+- Store data locally on the device
 
-## Tech Stack
+Amounts are displayed in Philippine pesos (PHP).
 
-- Python (argparse, sqlite3)
-- SQLite (local database)
+## Run locally
 
-## Usage / Commands
+Requires Python 3.13. On Windows, open a terminal in this repository and run:
 
-### Add an expense
-
-`python main.py add --description "Lunch" --amount 120`
-
-### List all expenses
-
-`python main.py list`
-
-### Delete an expense
-
-`python main.py delete --id 5`
-
-## Example Output
-
-``` text
-Expense List:
----------------------------------------------
-ID    Date           Description     Amount
----------------------------------------------
-1     2026-04-29     Lunch           120.0
-2     2026-04-29     Coffee          50.0
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install "flet[all]==1.0.5"
+flet run app.py
 ```
 
-## Roadmap
+## Build for Android
 
-- [x] Basic commands (add, list, delete)
-- [ ] Summary / Total of expenses
-- [ ] Monthly summary/filtering
-- [x] Refactoring / Modularization
-- [ ] Mini ETL Pipeline
-- [ ] n8n Discord automation integration
+With the virtual environment active, run:
 
-## Project Goal
+```powershell
+flet build apk --python-version 3.13
+```
 
-This project is part of a backend learning path and is being extended into a simple ETL system that will:
+The APK will be in `build/apk/`. The first build may download Flutter, JDK 17, and the Android SDK. See [Flet's Android build guide](https://flet.dev/docs/publish/android/) for requirements.
 
-- Extract data from SQLite
-- Transform it into summaries
-- Load it into external services (e.g., Discord, spreadsheets)
+## Tests
 
-## Notes
+```powershell
+python -m unittest discover -s tests -v
+```
 
-- The SQLite database file (.db) is ignored and not included in the repository.
-- The database is automatically created when the app runs.
+## Project status
 
-## License
+The app is usable for personal tracking, but still in early development. It has no account, cloud sync, import, export, or backup. Clearing the app's data or uninstalling it may remove saved expenses. The database and generated APK are intentionally excluded from Git.
 
-This project is for learning and portfolio purposes.
+The project began as a command-line tracker. Its earlier CLI code remains available in Git history; the current app starts from `app.py` and stores data through `expense_store.py`.

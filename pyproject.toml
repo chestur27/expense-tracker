@@ -1,0 +1,15 @@
+[project]
+name = "expense-tracker-mobile"
+version = "0.1.0"
+description = "Offline personal expense tracker for Android"
+requires-python = ">=3.13,<3.14"
+dependencies = ["flet==1.0.5"]
+
+[tool.flet]
+product = "Expense Tracker"
+company = "Personal"
+org = "com.personal"
+
+[tool.flet.app]
+path = "."
+module = "app"
