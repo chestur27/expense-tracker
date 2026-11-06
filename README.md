@@ -4,12 +4,21 @@ A small, offline Android expense tracker built with Python, Flet, and SQLite. Th
 
 ## Current features
 
-- Add expenses with a description, amount, and date
+- Add expenses with a description, amount, date, and category
+- Add, rename, and remove categories from the Categories tab
 - View expenses and totals by month
+- See category totals in the monthly summary
+- Record salary payments with a pay period and automatic date added, then track the available balance after expenses
+- Review salary, expenses, and the monthly change in the Summary tab
 - Edit expenses and delete them with confirmation
 - Store data locally on the device
+- Show a loading screen on startup and confirm before exiting with Android Back
 
 Amounts are displayed in Philippine pesos (PHP).
+Existing expenses are marked "Uncategorized" when the app upgrades its local database; edit them to choose a category.
+The category list starts empty. Add categories from the expense form or Categories tab; they are saved locally. Renaming one updates its expenses, and you can remove it after its expenses have been moved or deleted.
+The available balance carries forward: it is all salary received through the selected month minus all expenses dated through that month. Expenses recorded before any salary can make it negative.
+Salary entries use the date they were added for the budget. The pay period dates describe the work covered by that payment. Existing salary entries use their recorded date as both pay period dates until edited.
 
 ## Run locally
 
