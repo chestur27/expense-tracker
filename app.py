@@ -54,7 +54,10 @@ async def main(page: ft.Page):
     root_view.on_confirm_pop = lambda _: confirm_exit()
     page.on_view_pop = lambda _: confirm_exit()
 
-    page.add(ft.Column([
+    def show_content(control):
+        page.add(ft.SafeArea(content=control, expand=True))
+
+    show_content(ft.Column([
         ft.ProgressRing(),
         ft.Text("Loading Expense Tracker…", size=18, weight=ft.FontWeight.BOLD),
     ], expand=True, alignment=ft.MainAxisAlignment.CENTER,
@@ -250,7 +253,7 @@ async def main(page: ft.Page):
                 show_screen("expenses")
                 toast("Expense updated" if expense else "Expense added")
 
-            page.add(ft.Column([
+            show_content(ft.Column([
                 ft.Row([
                     ft.IconButton(ft.Icons.ARROW_BACK, on_click=lambda _: show_screen("expenses")),
                     ft.Text("Edit expense" if expense else "Add expense", size=24, weight=ft.FontWeight.BOLD),
@@ -320,7 +323,7 @@ async def main(page: ft.Page):
                 show_screen("salary")
                 toast("Salary updated" if salary else "Salary added")
 
-            page.add(ft.Column([
+            show_content(ft.Column([
                 ft.Row([
                     ft.IconButton(ft.Icons.ARROW_BACK, on_click=lambda _: show_screen("salary")),
                     ft.Text("Edit salary" if salary else "Add salary", size=24, weight=ft.FontWeight.BOLD),
@@ -359,7 +362,7 @@ async def main(page: ft.Page):
                         on_click=lambda _, x=name: confirm_delete_category(x),
                     ),
                 ]))
-            page.add(ft.Column(controls, spacing=16, scroll=ft.ScrollMode.AUTO, expand=True))
+            show_content(ft.Column(controls, spacing=16, scroll=ft.ScrollMode.AUTO, expand=True))
             page.navigation_bar = navigation_bar()
             page.update()
             return
@@ -479,7 +482,7 @@ async def main(page: ft.Page):
             if not items:
                 controls.append(ft.Text("No expenses this month."))
 
-        page.add(ft.Column(controls, spacing=16, scroll=ft.ScrollMode.AUTO, expand=True))
+        show_content(ft.Column(controls, spacing=16, scroll=ft.ScrollMode.AUTO, expand=True))
         page.navigation_bar = navigation_bar()
         page.update()
 

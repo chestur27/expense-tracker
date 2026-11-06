@@ -13,6 +13,7 @@ A small, offline Android expense tracker built with Python, Flet, and SQLite. Th
 - Edit expenses and delete them with confirmation
 - Store data locally on the device
 - Show a loading screen on startup and confirm before exiting with Android Back
+- Keep app content below the phone's status bar using the device safe area
 
 Amounts are displayed in Philippine pesos (PHP).
 Existing expenses are marked "Uncategorized" when the app upgrades its local database; edit them to choose a category.

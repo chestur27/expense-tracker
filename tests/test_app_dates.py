@@ -66,8 +66,12 @@ class AppDateTests(unittest.TestCase):
             SimpleNamespace(control=SimpleNamespace(selected_index=index))
         )
 
+    @property
+    def body(self):
+        return self.page.controls[0].content.controls
+
     def change_form_date(self, date_row_index, selected):
-        form = self.page.controls[0].controls
+        form = self.body
         form[date_row_index].controls[2].on_click(None)
         picker = self.page.dialogs[-1]
         picker.value = datetime.combine(selected, time(hour=12))
@@ -81,7 +85,8 @@ class AppDateTests(unittest.TestCase):
         self.assertEqual(app.picker_date(timestamp), timestamp.astimezone().date())
 
     def test_loading_view_and_exit_confirmation(self):
-        self.assertEqual(type(self.page.frames[0][0].controls[0]).__name__, "ProgressRing")
+        self.assertIsInstance(self.page.controls[0], ft.SafeArea)
+        self.assertEqual(type(self.page.frames[0][0].content.controls[0]).__name__, "ProgressRing")
         self.assertFalse(self.page.views[0].can_pop)
         self.page.views[0].on_confirm_pop(None)
         dialog = self.page.dialogs[-1]
@@ -93,6 +98,17 @@ class AppDateTests(unittest.TestCase):
         asyncio.run(dialog.actions[1].on_click(None))
         self.assertEqual(self.page.views[0].confirmed, [False, True])
 
+    def test_every_tab_and_form_uses_safe_area(self):
+        for index in range(4):
+            self.navigate(index)
+            self.assertIsInstance(self.page.controls[0], ft.SafeArea)
+        self.navigate(0)
+        self.body[2].controls[1].on_click(None)
+        self.assertIsInstance(self.page.controls[0], ft.SafeArea)
+        self.navigate(1)
+        self.body[2].controls[1].on_click(None)
+        self.assertIsInstance(self.page.controls[0], ft.SafeArea)
+
     def test_android_exit_action(self):
         self.page.web = False
         self.page.platform = ft.PagePlatform.ANDROID
@@ -102,50 +118,50 @@ class AppDateTests(unittest.TestCase):
         self.assertEqual(exit_result.exception.code, 0)
 
     def test_budget_and_expenses_have_separate_cards(self):
-        cards = self.page.controls[0].controls[1].controls
+        cards = self.body[1].controls
         self.assertEqual(cards[0].content.controls[0].value, "Available budget")
         self.assertEqual(cards[1].content.controls[0].value, "Expenses this month")
         self.navigate(1)
-        cards = self.page.controls[0].controls[1].controls
+        cards = self.body[1].controls
         self.assertEqual(cards[0].content.controls[0].value, "Available budget")
         self.assertEqual(cards[1].content.controls[0].value, "Salary this month")
         self.navigate(2)
-        cards = self.page.controls[0].controls[1].controls
+        cards = self.body[1].controls
         self.assertEqual(cards[0].content.controls[0].value, "Available budget")
         self.assertEqual(cards[1].content.controls[0].value, "Change this month")
 
     def test_salary_pay_period_and_expense_date(self):
         self.navigate(1)
-        self.page.controls[0].controls[2].controls[1].on_click(None)
+        self.body[2].controls[1].on_click(None)
         self.change_form_date(3, date(2027, 1, 1))
         self.change_form_date(4, date(2027, 1, 15))
-        form = self.page.controls[0].controls
+        form = self.body
         form[1].value = "1000"
         form[6].on_click(None)
         added_on = date.today()
         salary = self.store.list_salaries_month(added_on.year, added_on.month)[0]
         self.assertEqual(salary.received_on, added_on.isoformat())
         self.assertEqual((salary.period_start, salary.period_end), ("2027-01-01", "2027-01-15"))
-        self.assertEqual(self.page.controls[0].controls[0].controls[1].value, added_on.strftime("%B %Y"))
+        self.assertEqual(self.body[0].controls[1].value, added_on.strftime("%B %Y"))
 
         self.store.add_category("Food")
         self.navigate(0)
-        self.page.controls[0].controls[2].controls[1].on_click(None)
+        self.body[2].controls[1].on_click(None)
         self.change_form_date(5, date(2027, 2, 1))
-        form = self.page.controls[0].controls
+        form = self.body
         form[1].value = "Lunch"
         form[2].value = "50"
         form[3].value = "Food"
         form[6].on_click(None)
         self.assertEqual(self.store.list_month(2027, 2)[0].spent_on, "2027-02-01")
-        self.assertEqual(self.page.controls[0].controls[0].controls[1].value, "February 2027")
+        self.assertEqual(self.body[0].controls[1].value, "February 2027")
 
-        self.page.controls[0].controls[3].controls[2].on_click(None)
+        self.body[3].controls[2].on_click(None)
         self.change_form_date(5, date(2027, 3, 1))
-        self.page.controls[0].controls[6].on_click(None)
+        self.body[6].on_click(None)
         self.assertEqual(self.store.list_month(2027, 2), [])
         self.assertEqual(self.store.list_month(2027, 3)[0].spent_on, "2027-03-01")
-        self.assertEqual(self.page.controls[0].controls[0].controls[1].value, "March 2027")
+        self.assertEqual(self.body[0].controls[1].value, "March 2027")
 
 
 if __name__ == "__main__":
